@@ -1,32 +1,39 @@
-<html>
-    <head>
-        {% if title %}
-        <title>{{ title }} - Microblog</title>
-        {% else %}
-        <title>Welcome to Microblog</title>
-        {% endif %}
-    </head>
-    <body>
-        <div>
-            Microblog:
-            <a href="{{ url_for('index') }}">home</a>
-            {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">login</a>
-            {% else %}
-            <a href="{{ url_for('add') }}">add sentence</a>
-            <a href="{{ url_for('logout') }}">logout</a>
-            {% endif %}
+{% extends "bootstrap/base.html" %}
+
+{% block navbar %}
+<header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">SentenceApp</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">home</a></li>
+                {% if current_user.is_anonymous %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">login</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('add') }}">add sentence</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">logout</a></li>
+                {% endif %}
+            </ul>
         </div>
-        <hr>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-    </body>
-</html>
+    </nav>
+</header>
+
+{% endblock %}
+
+
+{% block messages %}
+
+<hr>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-{{ messages.0.0 }}" role="alert">
+    {% for category, message in messages %}
+    {{ message }} </br>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+{% endblock %}
+
+

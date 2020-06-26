@@ -8,21 +8,11 @@ from app.models import User, Post
 
 @app.route('/')
 @app.route('/index')
-@login_required
 def index():
-    posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-    posts_data = Post.query.all()
-    #print(type(posts_data[0]), posts_data[0].user_id)
-    return render_template('index.html', title='Home', posts=posts_data)
+    posts_and_users = db.session.query(Post, User).filter(User.id == Post.user_id). \
+        order_by(Post.timestamp.desc()).all()
+
+    return render_template('index.html', title='Home', posts=posts_and_users)
 
 
 @app.route('/login', methods=['GET', 'POST'])

@@ -31,7 +31,7 @@ class RegistrationForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    text_jp = StringField('text_jp', validators=[DataRequired()])
-    text_en = StringField('text_en', validators=[DataRequired()])
-    notes = StringField('notes')
+    text_jp = StringField('Sentence (Japanese)', validators=[DataRequired()])
+    text_en = StringField('Sentence (English)', validators=[DataRequired()])
+    notes = StringField('Notes')
     submit = SubmitField('Submit Sentence')

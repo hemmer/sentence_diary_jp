@@ -30,7 +30,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text_jp = db.Column(db.String(140))
     text_en = db.Column(db.String(140))
-    notes = db.Column(db.String(140))
+    notes = db.Column(db.String(140), default=None)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
