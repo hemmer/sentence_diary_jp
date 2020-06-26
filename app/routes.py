@@ -1,9 +1,49 @@
+from datetime import datetime
+
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, PostForm
+from app.forms import LoginForm, RegistrationForm, PostForm, DeleteForm
 from app.models import User, Post
+
+
+def humanize_ts(timestamp=False):
+    """
+    Get a datetime object or a int() Epoch timestamp and return a
+    pretty string like 'an hour ago', 'Yesterday', '3 months ago',
+    'just now', etc
+    """
+    now = datetime.now()
+    diff = now - timestamp
+    second_diff = diff.seconds
+    day_diff = diff.days
+
+    if day_diff < 0:
+        return ''
+
+    if day_diff == 0:
+        if second_diff < 10:
+            return "just now"
+        if second_diff < 60:
+            return str(int(second_diff)) + " seconds ago"
+        if second_diff < 120:
+            return "a minute ago"
+        if second_diff < 3600:
+            return str(int(second_diff / 60)) + " minutes ago"
+        if second_diff < 7200:
+            return "an hour ago"
+        if second_diff < 86400:
+            return str(int(second_diff / 3600)) + " hours ago"
+    if day_diff == 1:
+        return "Yesterday"
+    if day_diff < 7:
+        return str(day_diff) + " days ago"
+    if day_diff < 31:
+        return str(int(day_diff / 7)) + " weeks ago"
+    if day_diff < 365:
+        return str(int(day_diff / 30)) + " months ago"
+    return str(int(day_diff / 365)) + " years ago"
 
 
 @app.route('/')
@@ -49,7 +89,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
+        flash('Congratulations, you are now a registered user!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -68,3 +108,28 @@ def add():
         flash('Congratulations, post added!')
         return redirect(url_for('index'))
     return render_template('add.html', title='Add', form=form)
+
+
+@app.route('/delete/<id>', methods=['GET', 'POST'])
+@login_required
+def delete(id):
+    post = db.session.query(Post).filter(Post.id == id).first()
+
+    if post is None:
+        flash("Cannot delete post, not found!", "warning")
+        return redirect(url_for('index'))
+
+    if int(current_user.get_id()) != post.user_id:
+        flash("Can only delete own posts!", 'danger')
+
+        return redirect(url_for('index'))
+
+    form = DeleteForm()
+    if form.validate_on_submit():
+        flash("Post deleted.", 'info')
+
+        db.session.query(Post).filter(Post.id == id).delete()
+        db.session.commit()
+        return redirect(url_for('index'))
+
+    return render_template('delete.html', title='Delete', form=form, id=id, post=post)

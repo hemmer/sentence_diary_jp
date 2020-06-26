@@ -2,22 +2,30 @@
 {% import "bootstrap/utils.html" as utils %}
 
 {% block content %}
-<div class="container">
-    <h1>Sentences</h1>
-    {% if current_user.is_anonymous %}
-    <h2>Welcome Guest</h2>
-    {% else %}
-    <h2>Welcome "{{ current_user.username }}"</h2>
-    {% endif %}
+<div class="container main">
+
+    {{ utils.flashed_messages() }}
+    <br/>
+    <div class="card text-white bg-primary">
+        <div class="card-body">
+            <h4 class="card-title">Information</h4>
+            <p class="card-text">This page lists all sentences for all users.</p>
+        </div>
+    </div>
 
     {% for post, user in posts %}
     <div class="row" style="padding: 15px">
-        <div class="card" style="width: 50rem;">
+        <div class="card" style="width: 100%;">
+            <div class="card-header">#{{post.id}}, user: {{ user.username }}
+                <span class="text-muted" style="float: right">
+
+                    {{ post.timestamp | humanize }}
+                </span>
+            </div>
             <div class="card-body">
-                <h4 class="card-title">user: {{ user.username }}</h4>
+
 
                 <p class="card-text">
-                    <b>date</b>: {{ post.timestamp }}<br/>
                     <b>jp:</b> {{ post.text_jp }}<br/>
                     <b>en:</b> {{ post.text_en }}<br/>
                     {% if post.notes %}
@@ -25,6 +33,15 @@
                     {% endif %}
                 </p>
             </div>
+
+            {% if current_user.username == user.username %}
+            <div class="card-footer">
+                <small>
+                    <a class="text-danger" href="{{ url_for('delete', id=post.id) }}">delete post</a>
+                </small>
+            </div>
+            {% endif %}
+
         </div>
     </div>
     {% endfor %}

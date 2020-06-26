@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+<div class="container main">
+    <div class="bs-component">
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4 class="alert-heading">Warning!</h4>
+            <p class="mb-0">Are you sure you want to delete?</p>
+        </div>
+    </div>
+
+    <div class="card" style="width: 100%;">
+        <div class="card-header">Deleting #{{post.id}}
+            <span class="text-muted" style="float: right">{{ post.timestamp | humanize }}</span>
+        </div>
+        <div class="card-body">
+
+
+            <p class="card-text">
+                <b>jp:</b> {{ post.text_jp }}<br/>
+                <b>en:</b> {{ post.text_en }}<br/>
+                {% if post.notes %}
+                <b>notes:</b> {{ post.notes }}<br/>
+                {% endif %}
+                <b>date</b>: <br/>
+            </p>
+
+            <form action="" method="post" class="form" role="form">
+                {{ form.hidden_tag() }}
+                <input class="btn btn-primary" id="delete" name="delete" type="submit" value="Delete">
+            </form>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
