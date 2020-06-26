@@ -3,6 +3,7 @@ from app.models import User, Post
 
 db.create_all()
 
+"""
 user = User(username="a", email="test@test.com")
 user.set_password("b")
 db.session.add(user)
@@ -15,3 +16,4 @@ post = Post(text_jp="その取っ手を右にねじると箱は開きます。",
 db.session.add(post)
 
 db.session.commit()
+"""
