@@ -6,19 +6,27 @@
 
     {{ utils.flashed_messages() }}
     <br/>
+    {% if show_all %}
     <div class="card text-white bg-primary">
         <div class="card-body">
             <h4 class="card-title">Information</h4>
             <p class="card-text">This page lists all sentences for all users.</p>
         </div>
     </div>
+    {% endif %}
 
     {% for post, user in posts %}
     <div class="row" style="padding: 15px">
         <div class="card" style="width: 100%;">
-            <div class="card-header">#{{post.id}}, user: {{ user.username }}
-                <span class="text-muted" style="float: right">
+            <div class="card-header">
+                #{{post.id}}, user:
+                {% if user.id == current_user.id %}
+                <strong><a href="{{ url_for('user', id=user.id) }}">{{ user.username }}</a></strong>
+                {% else %}
+                <a href="{{ url_for('user', id=user.id) }}">{{ user.username }}</a>
+                {% endif %}
 
+                <span class="text-muted" style="float: right">
                     {{ post.timestamp | humanize }}
                 </span>
             </div>
@@ -27,7 +35,7 @@
 
                 <p class="card-text">
                     <b>jp:</b> {{ post.text_jp }}<br/>
-                    <b>en:</b> {{ post.text_en }}<br/>
+                    <b>en:</b> <span class="text_en">{{ post.text_en }}</span><br/>
                     {% if post.notes %}
                     <b>notes:</b> {{ post.notes }}<br/>
                     {% endif %}

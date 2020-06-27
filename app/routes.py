@@ -52,7 +52,15 @@ def index():
     posts_and_users = db.session.query(Post, User).filter(User.id == Post.user_id). \
         order_by(Post.timestamp.desc()).all()
 
-    return render_template('index.html', title='Home', posts=posts_and_users)
+    return render_template('index.html', title='Home', posts=posts_and_users, show_all=True)
+
+@app.route('/')
+@app.route('/user/<id>')
+def user(id):
+    posts_and_users = db.session.query(Post, User).filter(User.id == Post.user_id). \
+        filter(User.id == id).order_by(Post.timestamp.desc()).all()
+
+    return render_template('index.html', title='User', posts=posts_and_users, show_all=False)
 
 
 @app.route('/login', methods=['GET', 'POST'])
