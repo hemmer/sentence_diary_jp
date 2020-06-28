@@ -3,7 +3,6 @@
 This project provides a way to practice writing regular sentences in Japanese, where the interface automatically converts
 to kana. It was derived from the [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world).
 
-
  # Development
  
 To develop, create a virtual environment and install the requirements.txt:
