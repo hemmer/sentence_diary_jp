@@ -1,0 +1,22 @@
+
+.main {
+    padding-top: 15px;
+}
+
+.text_en {
+color: transparent;
+text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.text_en:hover {
+color: black;
+text-shadow: none;
+}
+
+.badge a {
+    color: white;
+}
+
+footer {
+    padding: 15px
+}

@@ -2,15 +2,15 @@
 {% import "bootstrap/utils.html" as utils %}
 
 {% block content %}
-<div class="container main">
 
     {{ utils.flashed_messages() }}
     <br/>
     {% if show_all %}
     <div class="card text-white bg-primary">
         <div class="card-body">
-            <h4 class="card-title">Information</h4>
-            <p class="card-text">This page lists all sentences for all users.</p>
+            <h4 class="card-title">Japanese Language Diary / 日本語の日記</h4>
+            <p class="card-text">This site is intented as a way to practice writing regular sentences in Japanese. This
+                page lists all sentences for all users.</p>
         </div>
     </div>
     {% endif %}
@@ -19,14 +19,13 @@
     <div class="row" style="padding: 15px">
         <div class="card" style="width: 100%;">
             <div class="card-header">
-                #{{post.id}}, user:
-                {% if user.id == current_user.id %}
-                <strong><a href="{{ url_for('user', id=user.id) }}">{{ user.username }}</a></strong>
-                {% else %}
-                <a href="{{ url_for('user', id=user.id) }}">{{ user.username }}</a>
-                {% endif %}
-
+                #{{post.id}}
                 <span class="text-muted" style="float: right">
+                    {% if user.id == current_user.id %}
+                    <span class="badge badge-primary"><a href="{{ url_for('user', id=user.id) }}">{{ user.username }}</a></span>
+                    {% else %}
+                    <span class="badge badge-secondary"><a href="{{ url_for('user', id=user.id) }}">{{ user.username }}</a></span>
+                    {% endif %} |
                     {{ post.timestamp | humanize }}
                 </span>
             </div>
@@ -53,5 +52,5 @@
         </div>
     </div>
     {% endfor %}
-</div>
+
 {% endblock %}

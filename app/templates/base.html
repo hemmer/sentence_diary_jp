@@ -1,31 +1,26 @@
-{% extends "bootstrap/base.html" %}
-{% import "bootstrap/utils.html" as utils %}
+{% block doc -%}
+<!DOCTYPE html>
+<html{% block html_attribs %}{% endblock html_attribs %}>
+{%- block html %}
+<head>
+    {%- block head %}
+    <title>{% block title %}{{title|default}}{% endblock title %}</title>
 
+    {%- block metas %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%- endblock metas %}
 
-{% block styles %}
-{{super()}}
-<link rel="stylesheet" href="{{url_for('.static', filename='bootstrap.min.css')}}">
-<style>
-    .main {
-        padding-top: 15px;
-    }
+    {%- block styles %}
+    <!-- Bootstrap -->
+    <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('.static', filename='bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('.static', filename='custom.css')}}">
+    {%- endblock styles %}
+    {%- endblock head %}
+</head>
 
-    .text_en {
-   color: transparent;
-   text-shadow: 0 0 5px rgba(0,0,0,0.5);
-    }
-
-   .text_en:hover {
-   color: black;
-   text-shadow: none;
-    }
-
-
-
-
-</style>
-{% endblock %}
-
+<body{% block body_attribs %}{% endblock body_attribs %}>
+{% block body -%}
 {% block navbar %}
 <header>
 
@@ -34,7 +29,7 @@
                 aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#">SentenceDiary</a>
+        <a class="navbar-brand" href="/">Japanese Language Diary</a>
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -44,26 +39,41 @@
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">login</a></li>
                 {% else %}
                 <li class="nav-item"><a class="nav-link{%- if request.path == url_for('add') %} active{% endif %}"
-                                        href="{{ url_for('add') }}">add sentence</a></li>
+                                        href="{{ url_for('add') }}">add entry</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">logout</a></li>
                 {% endif %}
             </ul>
             {% if current_user.is_anonymous %}
             <p class="navbar-nav">Guest</p>
             {% else %}
-            <p class="navbar-nav">
-                Welcome&nbsp;<a href="{{ url_for('user', id=current_user.id) }}">{{ current_user.username }}</a>
-            </p>
+            <p class="navbar-nav">Welcome&nbsp;<a href="{{ url_for('user', id=current_user.id) }}">{{
+                current_user.username }}</a></p>
             {% endif %}
         </div>
     </nav>
 </header>
 
-{% endblock %}
+{%- endblock navbar %}
+<div class="container main">
+    {% block content -%}
+    {%- endblock content %}
+    <footer id="footer" class="page-footer">
+        <div class="container-fluid text-center">
+            <a href="https://github.com/hemmer/sentence_diary_jp">github source</a>
+        </div>
+    </footer>
+</div>
 
-{%- block content %}
-{{super()}}
-{%- block footer %}
-<footer>&copy; 2016 Awesome, Inc.</footer>
-{%- endblock footer %}
-{%- endblock content %}
+
+{% block scripts %}
+<script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
+<script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script>
+{%- endblock scripts %}
+
+{%- endblock body %}
+</body>
+{%- endblock html %}
+</html>
+{% endblock doc -%}
+
+

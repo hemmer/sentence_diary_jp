@@ -2,9 +2,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-<div class="container main">
-    {{ utils.flashed_messages() }}
-    <h1>Register</h1>
-    {{ wtf.quick_form(form) }}
-</div>
+{{ utils.flashed_messages() }}
+<h1>Register</h1>
+{{ wtf.quick_form(form) }}
 {% endblock %}

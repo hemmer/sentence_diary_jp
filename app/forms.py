@@ -34,7 +34,9 @@ class RegistrationForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    text_jp = StringField('Sentence (Japanese)', validators=[DataRequired()])
-    text_en = StringField('Sentence (English)', validators=[DataRequired()])
+    text_jp = StringField('Entry (Japanese)', validators=[DataRequired()],
+                          description="Text will be automatically converted to ひらがな (lowercase romanji) "
+                                      "/ カタカナ (uppercase romanji).")
+    text_en = StringField('Entry (English)', description="Optional translation")
     notes = StringField('Notes')
     submit = SubmitField('Submit Sentence')
