@@ -1,3 +1,23 @@
-# Welcome to Microblog!
+# Japanese Language Diary / 日本語の日記
 
-This is an example application featured in my [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world). See the tutorial for instructions on how to work with it.
+This project provides a way to practice writing regular sentences in Japanese, where the interface automatically converts
+to kana. It was derived from the [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world).
+ 
+At time of writing, an instance of the app was deployed at:
+
+https://sentence-diary-jp.herokuapp.com
+ 
+ # Development
+ 
+To develop, create a virtual environment and install the requirements.txt:
+
+> pip install -r requirements.txt  
+ 
+Setup the database (this will create app.db)
+
+> python setup_db.py
+
+And start the webserver with
+ 
+> flask run  
+
