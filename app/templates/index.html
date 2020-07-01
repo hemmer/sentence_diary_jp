@@ -1,9 +1,8 @@
 {% extends "base.html" %}
-{% import "bootstrap/utils.html" as utils %}
 
 {% block content %}
 
-    {{ utils.flashed_messages() }}
+
     <br/>
     {% if show_all %}
     <div class="card text-white bg-primary">
@@ -25,8 +24,7 @@
                     <span class="badge badge-primary"><a href="{{ url_for('user', id=user.id) }}">{{ user.username }}</a></span>
                     {% else %}
                     <span class="badge badge-secondary"><a href="{{ url_for('user', id=user.id) }}">{{ user.username }}</a></span>
-                    {% endif %} |
-                    {{ post.timestamp | humanize }}
+                    {% endif %} | {{ post.timestamp | humanize }}</a>
                 </span>
             </div>
             <div class="card-body">

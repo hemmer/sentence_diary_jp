@@ -1,3 +1,5 @@
+{% import "bootstrap/utils.html" as utils %}
+
 {% block doc -%}
 <!DOCTYPE html>
 <html{% block html_attribs %}{% endblock html_attribs %}>
@@ -55,6 +57,8 @@
 
 {%- endblock navbar %}
 <div class="container main">
+    {{ utils.flashed_messages() }}
+
     {% block content -%}
     {%- endblock content %}
     <footer id="footer" class="page-footer">
@@ -66,6 +70,7 @@
 
 
 {% block scripts %}
+
 <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
 <script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script>
 {%- endblock scripts %}

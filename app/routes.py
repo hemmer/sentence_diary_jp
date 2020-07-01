@@ -14,7 +14,8 @@ def humanize_ts(timestamp=False):
     pretty string like 'an hour ago', 'Yesterday', '3 months ago',
     'just now', etc
     """
-    now = datetime.now()
+
+    now = datetime.utcnow()
     diff = now - timestamp
     second_diff = diff.seconds
     day_diff = diff.days
@@ -73,10 +74,13 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
+
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
+        flash('User logged in successfully!')
+
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
