@@ -55,6 +55,7 @@ def index():
 
     return render_template('index.html', title='Home', posts=posts_and_users, show_all=True)
 
+
 @app.route('/')
 @app.route('/user/<id>')
 def user(id):
@@ -145,3 +146,38 @@ def delete(id):
         return redirect(url_for('index'))
 
     return render_template('delete.html', title='Delete', form=form, id=id, post=post)
+
+
+@app.route('/edit/<id>', methods=['GET', 'POST'])
+@login_required
+def edit(id):
+    post = db.session.query(Post).filter(Post.id == id).first()
+
+    if post is None:
+        flash("Cannot delete post, not found!", "warning")
+        return redirect(url_for('index'))
+
+    if int(current_user.get_id()) != post.user_id:
+        flash("Can only edit own posts!", 'danger')
+
+        return redirect(url_for('index'))
+
+    form = PostForm()
+    if request.method == "GET":
+        # pre-populate the form with the post
+        form.text_jp.data = post.text_jp
+        form.text_en.data = post.text_en
+        form.notes.data = post.notes
+
+    elif request.method == "POST" and form.validate_on_submit():
+        flash("Post edited.", 'info')
+
+        # update the post object and commit to db
+        post.text_jp = form.text_jp.data
+        post.text_en = form.text_en.data
+        post.notes = form.notes.data
+        db.session.commit()
+
+        return redirect(url_for('index'))
+
+    return render_template('add.html', title='Edit', form=form, id=id, post=post)

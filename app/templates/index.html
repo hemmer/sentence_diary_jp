@@ -42,6 +42,7 @@
             {% if current_user.username == user.username %}
             <div class="card-footer">
                 <small>
+                    <a class="text-info" href="{{ url_for('edit', id=post.id) }}">edit post</a> |
                     <a class="text-danger" href="{{ url_for('delete', id=post.id) }}">delete post</a>
                 </small>
             </div>
