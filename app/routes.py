@@ -6,6 +6,7 @@ from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, PostForm, DeleteForm
 from app.models import User, Post
+from flask_paginate import Pagination, get_page_args
 
 
 def humanize_ts(timestamp=False):
@@ -53,7 +54,14 @@ def index():
     posts_and_users = db.session.query(Post, User).filter(User.id == Post.user_id). \
         order_by(Post.timestamp.desc()).all()
 
-    return render_template('index.html', title='Home', posts=posts_and_users, show_all=True)
+    page, per_page, offset = get_page_args(page_parameter='page',
+                                           per_page_parameter='per_page')
+    total = len(posts_and_users)
+    pagination = Pagination(page=page, per_page=per_page, total=total,
+                            css_framework='bootstrap4')
+
+    return render_template('index.html', title='Home', posts=posts_and_users[offset: offset + per_page],
+                           pagination=pagination, show_all=True)
 
 
 @app.route('/')
