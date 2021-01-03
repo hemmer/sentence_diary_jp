@@ -39,14 +39,19 @@
                 </p>
             </div>
 
-            {% if current_user.username == user.username %}
+
             <div class="card-footer">
                 <small>
-                    <a class="text-info" href="{{ url_for('edit', id=post.id) }}">edit post</a> |
-                    <a class="text-danger" href="{{ url_for('delete', id=post.id) }}">delete post</a>
+                    <a class="text-dark" href="https://www.deepl.com/translator#ja/en/{{ post.text_jp }}">DeepL</a>
+                    | <a class="text-dark" href="https://translate.google.com/?sl=jp&tl=en&text={{ post.text_jp }}&op=translate">Google Translate</a>
+                    | <a class="text-dark" href="https://jisho.org/search/{{ post.text_jp }}">Jisho</a>
+                    {% if current_user.username == user.username %}
+                    | <a class="text-info" href="{{ url_for('edit', id=post.id) }}">edit post</a>
+                    | <a class="text-danger" href="{{ url_for('delete', id=post.id) }}">delete post</a>
+                    {% endif %}
                 </small>
             </div>
-            {% endif %}
+
 
         </div>
     </div>
